@@ -107,6 +107,17 @@ def changebout():
     else:
         bouton_play['text']="pause"
 
+
+def accelletemps():
+    global tempsetape
+    if tempsetape > 51:
+        tempsetape-=50
+
+def ralentemps():
+    global tempsetape
+    tempsetape+=50
+
+
 def effectetape():
     global position, direction
     position, direction = dessine(position, direction, sol)
@@ -118,8 +129,12 @@ fourmi.title("fourmi de Langton")
 can = tk.Canvas(fourmi, width= LARGEUR, height=HAUTEUR,bd=100)
 bouton_play = tk.Button(fourmi,text="play",command= fonctionboutplay)
 bouton_etape =tk.Button(fourmi,text="étape",command=effectetape)
+bouton_tmsplus=tk.Button(fourmi,text="accélérer le temps",command=accelletemps)
+bouton_tmsmoins=tk.Button(fourmi,text="ralentir le temps",command=ralentemps)
 can.grid(column=1, row=0, rowspan=10)
+bouton_play.grid(column=2,row=2)
+bouton_etape.grid(column=2,row=4)
+bouton_tmsplus.grid(column=2,row=6)
+bouton_tmsmoins.grid(column=2,row=8)
 etape()
-bouton_play.grid(column=2,row=4)
-bouton_etape.grid(column=2,row=6)
 fourmi.mainloop()
