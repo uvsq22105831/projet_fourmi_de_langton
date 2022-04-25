@@ -6,9 +6,9 @@
 import tkinter as tk
 import time
 
-LARGEUR =500
-HAUTEUR = 500
-NOMBRECARRE=50
+LARGEUR =600
+HAUTEUR = 600
+NOMBRECARRE=100
 Cellule =LARGEUR // NOMBRECARRE
 direction= (1,0)
 LPOS=LARGEUR//Cellule
@@ -28,6 +28,15 @@ def deplacement(position,direction, sol):
     """créé le déplacement a partir de la liste sol"""
     i, j = position
     a, b = direction
+    if j==NOMBRECARRE:
+        j=1
+    if j==0:
+        j=NOMBRECARRE-1
+    if i==0:
+        i=NOMBRECARRE-1
+    if i==NOMBRECARRE:
+        i=1
+
     aa, bb = (-b, a) if sol[i][j] == 0 else (b, -a)
     return (i + aa, j + bb), (aa, bb)
 
@@ -35,9 +44,22 @@ def dessinefourmi(position, direction, sol):
     """va donner la nouvelle direction et position de la fourmi"""
     global fourmimi,dirfourm,positionavant,premiertour
     (ii, jj), nouvelledir = deplacement(position, direction, sol)
-    i, j = position
-    x, y = i * Cellule, j * Cellule
-    colorfourm = sol[i][j]
+    print(position)
+    m, n = position
+    if n==NOMBRECARRE:
+        position=(m,1)
+        n=1
+    if n==0:
+        position=(m,NOMBRECARRE-1)
+        n=NOMBRECARRE-1
+    if m==0:
+        position=(NOMBRECARRE-1,n)
+        m=NOMBRECARRE-1
+    if m==NOMBRECARRE:
+        position=(1,n)
+        m=1
+    x, y = m * Cellule, n * Cellule
+    colorfourm = sol[m][n]
     c, d =positionavant
     f,g = c * Cellule, d * Cellule
     colorcarre=sol[c][d]
@@ -99,7 +121,7 @@ def etape():
     global position, direction
     position, direction = dessinefourmi(position, direction, sol)
     fourmi.after(tempsetape, etape)
-    print("hey")
+
 
 
 def fonctionboutplay():
@@ -109,7 +131,7 @@ def fonctionboutplay():
 def pause():
     global tempsetape
     if tempsetape == 9999999999:
-        tempsetape =1000
+        tempsetape =510
         fourmi.after(tempsetape, etape)
     else:
         tempsetape =9999999999
@@ -123,7 +145,7 @@ def changebout():
 
 def accelletemps():
     global tempsetape
-    if tempsetape > 51:
+    if tempsetape > 11:
         tempsetape-=50
 
 def ralentemps():
@@ -139,12 +161,12 @@ def effectetape():
 #programme principal
 fourmi = tk.Tk()
 fourmi.title("fourmi de Langton")
-can = tk.Canvas(fourmi, width= LARGEUR, height=HAUTEUR,bd=100)
+can = tk.Canvas(fourmi, width= LARGEUR, height=HAUTEUR)
 bouton_play = tk.Button(fourmi,text="play",command= fonctionboutplay)
 bouton_etape =tk.Button(fourmi,text="étape",command=effectetape)
 bouton_tmsplus=tk.Button(fourmi,text="accélérer le temps",command=accelletemps)
 bouton_tmsmoins=tk.Button(fourmi,text="ralentir le temps",command=ralentemps)
-can.grid(column=1, row=0, rowspan=10)
+can.grid(column=0, row=0, rowspan=10)
 bouton_play.grid(column=2,row=2)
 bouton_etape.grid(column=2,row=4)
 bouton_tmsplus.grid(column=2,row=6)
