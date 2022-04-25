@@ -36,7 +36,6 @@ def deplacement(position,direction, sol):
         i=NOMBRECARRE-1
     if i==NOMBRECARRE:
         i=1
-
     aa, bb = (-b, a) if sol[i][j] == 0 else (b, -a)
     return (i + aa, j + bb), (aa, bb)
 
@@ -60,45 +59,24 @@ def dessinefourmi(position, direction, sol):
         m=1
     x, y = m * Cellule, n * Cellule
     colorfourm = sol[m][n]
+    print(colorfourm)
     c, d =positionavant
     f,g = c * Cellule, d * Cellule
     colorcarre=sol[c][d]
 
-
-    if colorfourm== 0:
-        if dirfourm=="bas":
-            can.delete(fourmimi)
-            fourmimi=can.create_rectangle((x+2, y), (x+Cellule-2, y+Cellule-1.5),fill="red",outline='')
-            dirfourm="gauche"
-        elif dirfourm=="gauche":
-            can.delete(fourmimi)
-            fourmimi=can.create_rectangle((x, y+2), (x+Cellule-1.5, y+Cellule-2),fill="red",outline='')
-            dirfourm="haut"
-        elif dirfourm=="haut":
-            can.delete(fourmimi)
-            fourmimi=can.create_rectangle((x+2, y), (x+Cellule-2, y+Cellule-1.5),fill="red",outline='')
-            dirfourm="droite"
-        elif dirfourm=="droite":
-            can.delete(fourmimi)
-            fourmimi=can.create_rectangle((x+1.5, y+2), (x +Cellule, y+Cellule-2),fill="red",outline='')
-            dirfourm= "bas"
-    else:
-        if dirfourm=="bas":
-            can.delete(fourmimi)
-            fourmimi=can.create_rectangle((x+2, y), (x+Cellule-2, y+Cellule-1.5),fill="red",outline='')
-            dirfourm="droite"
-        elif dirfourm=="gauche":
-            can.delete(fourmimi)
-            fourmimi=can.create_rectangle((x+1.5, y+2), (x +Cellule, y+Cellule-2),fill="red",outline='')
-            dirfourm= "bas"
-        elif dirfourm=="haut":
-            can.delete(fourmimi)
-            fourmimi=can.create_rectangle((x+2, y), (x+Cellule-2, y+Cellule-1.5),fill="red",outline='')
-            dirfourm="gauche"
-        elif dirfourm=="droite":
-            can.delete(fourmimi)
-            fourmimi=can.create_rectangle((x, y+2), (x+Cellule-1.5, y+Cellule-2),fill="red",outline='')
-            dirfourm="haut"
+    can.delete(fourmimi)
+    if dirfourm=="bas"and colorfourm==0 or dirfourm =="haut" and colorfourm!=0:
+        fourmimi=can.create_rectangle((x+2, y), (x+Cellule-2, y+Cellule-1.5),fill="red",outline='')
+        dirfourm="gauche"
+    elif dirfourm=="gauche"and colorfourm==0 or dirfourm =="droite" and colorfourm!=0:
+        fourmimi=can.create_rectangle((x, y+2), (x+Cellule-1.5, y+Cellule-2),fill="red",outline='')
+        dirfourm="haut"
+    elif dirfourm=="haut"and colorfourm==0 or dirfourm =="bas" and colorfourm!=0:
+        fourmimi=can.create_rectangle((x+2, y), (x+Cellule-2, y+Cellule-1.5),fill="red",outline='')
+        dirfourm="droite"
+    elif dirfourm=="droite"and colorfourm==0 or dirfourm =="gauche" and colorfourm!=0:
+        fourmimi=can.create_rectangle((x+1.5, y+2), (x +Cellule, y+Cellule-2),fill="red",outline='')
+        dirfourm= "bas"
 
     if premiertour ==0:
         if colorcarre == 0:
