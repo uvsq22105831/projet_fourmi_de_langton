@@ -8,7 +8,7 @@ import time
 
 LARGEUR =500
 HAUTEUR = 500
-NOMBRECARRE=60
+NOMBRECARRE=50
 Cellule =LARGEUR // NOMBRECARRE
 direction= (1,0)
 LPOS=LARGEUR//Cellule
@@ -17,7 +17,8 @@ position =(LPOS//2-10,LPOS//2+19)
 sol = [[0] * LPOS for _ in range(LPOS)]
 dirfourm="bas"
 fourmimi =0
-
+premiertour=1
+positionavant=0,0
 #########################
 #fonctions
 
@@ -30,64 +31,76 @@ def deplacement(position,direction, sol):
     aa, bb = (-b, a) if sol[i][j] == 0 else (b, -a)
     return (i + aa, j + bb), (aa, bb)
 
-def dessine(position, direction, sol):
+def dessinefourmi(position, direction, sol):
     """va donner la nouvelle direction et position de la fourmi"""
-    global fourmimi,dirfourm
+    global fourmimi,dirfourm,positionavant,premiertour
     (ii, jj), nouvelledir = deplacement(position, direction, sol)
     i, j = position
     x, y = i * Cellule, j * Cellule
-    colorcarre = sol[i][j]
+    colorfourm = sol[i][j]
+    c, d =positionavant
+    f,g = c * Cellule, d * Cellule
+    colorcarre=sol[c][d]
 
-    if colorcarre == 0:
+
+    if colorfourm== 0:
         if dirfourm=="bas":
             can.delete(fourmimi)
-            fourmimi=can.create_rectangle((x, (y+Cellule)), (x+Cellule, (y+2*Cellule)),fill="red",outline='')
+            fourmimi=can.create_rectangle((x+2, y), (x+Cellule-2, y+Cellule-1.5),fill="red",outline='')
             dirfourm="gauche"
         elif dirfourm=="gauche":
             can.delete(fourmimi)
-            fourmimi=can.create_rectangle((x, y), (x-Cellule, y+Cellule),fill="red",outline='')
+            fourmimi=can.create_rectangle((x, y+2), (x+Cellule-1.5, y+Cellule-2),fill="red",outline='')
             dirfourm="haut"
         elif dirfourm=="haut":
             can.delete(fourmimi)
-            fourmimi=can.create_rectangle((x, y), (x +Cellule, y-Cellule),fill="red",outline='')
+            fourmimi=can.create_rectangle((x+2, y), (x+Cellule-2, y+Cellule-1.5),fill="red",outline='')
             dirfourm="droite"
         elif dirfourm=="droite":
             can.delete(fourmimi)
-            fourmimi=can.create_rectangle((x+Cellule, y), (x +2*Cellule, y+Cellule),fill="red",outline='')
+            fourmimi=can.create_rectangle((x+1.5, y+2), (x +Cellule, y+Cellule-2),fill="red",outline='')
             dirfourm= "bas"
-        colorcarre = creesol(i, j)
-        sol[i][j] = colorcarre
     else:
         if dirfourm=="bas":
             can.delete(fourmimi)
-            fourmimi=can.create_rectangle((x, y), (x +Cellule, y-Cellule),fill="red",outline='')
+            fourmimi=can.create_rectangle((x+2, y), (x+Cellule-2, y+Cellule-1.5),fill="red",outline='')
             dirfourm="droite"
         elif dirfourm=="gauche":
             can.delete(fourmimi)
-            fourmimi=can.create_rectangle((x+Cellule, y), (x +2*Cellule, y +Cellule),fill="red",outline='')
+            fourmimi=can.create_rectangle((x+1.5, y+2), (x +Cellule, y+Cellule-2),fill="red",outline='')
             dirfourm= "bas"
         elif dirfourm=="haut":
             can.delete(fourmimi)
-            fourmimi=can.create_rectangle((x, y+Cellule), (x +Cellule, y+2*Cellule),fill="red",outline='')
+            fourmimi=can.create_rectangle((x+2, y), (x+Cellule-2, y+Cellule-1.5),fill="red",outline='')
             dirfourm="gauche"
         elif dirfourm=="droite":
             can.delete(fourmimi)
-            fourmimi=can.create_rectangle((x, y), (x-Cellule, y+Cellule),fill="red",outline='')
+            fourmimi=can.create_rectangle((x, y+2), (x+Cellule-1.5, y+Cellule-2),fill="red",outline='')
             dirfourm="haut"
-        can.delete(colorcarre)
-        sol[i][j] = 0
 
+    if premiertour ==0:
+        if colorcarre == 0:
+            colorcarre = creesol(c, d)
+            sol[c][d] = colorcarre
+        else:
+            can.delete(colorcarre)
+            sol[c][d] = 0
+    else:
+        premiertour=0
+    positionavant=position
     return (ii, jj), nouvelledir
 
-def creesol(i, j):
-    x, y = i * Cellule, j * Cellule
-    colorcarre = can.create_rectangle((x, y), (x +Cellule , y + Cellule),fill="black",outline='')
+def creesol(c, d):
+    f, g = c * Cellule, d * Cellule
+    colorcarre = can.create_rectangle((f, g), (f +Cellule , g + Cellule),fill="black",outline='')
     return colorcarre
 
 def etape():
     global position, direction
-    position, direction = dessine(position, direction, sol)
+    position, direction = dessinefourmi(position, direction, sol)
     fourmi.after(tempsetape, etape)
+    print("hey")
+
 
 def fonctionboutplay():
     pause()
@@ -120,7 +133,7 @@ def ralentemps():
 
 def effectetape():
     global position, direction
-    position, direction = dessine(position, direction, sol)
+    position, direction = dessinefourmi(position, direction, sol)
 
 ##########################################
 #programme principal
