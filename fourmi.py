@@ -135,19 +135,60 @@ def effectetape():
     global position, direction
     position, direction = dessinefourmi(position, direction, sol)
 
+def sauvegarde():
+    fic =open("sauvegarde.txt","w")
+    fic.write(str(NOMBRECARRE)+"\n")
+    for k in range(NOMBRECARRE):
+        for l in range(NOMBRECARRE):
+            fic.write(str(sol[k][l])+"\n")
+    fic.close
+
+def charge():
+    global NOMBRECARRE, colorcarre
+    fic = open("sauvegarde.txt", "r")
+    ligne = fic.readline()
+    NOMBRECARRE = int(ligne)
+    premiertour=0
+    i,j=0,0
+    for ligne in fic:
+        n = int(ligne)
+        sol[i][j] = n
+        etape
+        j += 1
+        if j == NOMBRECARRE:
+            j = 0
+            i += 1
+    fic.close()
+    effectetape()
 ##########################################
 #programme principal
 fourmi = tk.Tk()
 fourmi.title("fourmi de Langton")
+
+#création du canevas
 can = tk.Canvas(fourmi, width= LARGEUR, height=HAUTEUR)
+
+#création des boutons
 bouton_play = tk.Button(fourmi,text="play",command= fonctionboutplay)
 bouton_etape =tk.Button(fourmi,text="étape",command=effectetape)
 bouton_tmsplus=tk.Button(fourmi,text="accélérer le temps",command=accelletemps)
 bouton_tmsmoins=tk.Button(fourmi,text="ralentir le temps",command=ralentemps)
-can.grid(column=0, row=0, rowspan=10)
-bouton_play.grid(column=2,row=2)
-bouton_etape.grid(column=2,row=4)
-bouton_tmsplus.grid(column=2,row=6)
-bouton_tmsmoins.grid(column=2,row=8)
+bouton_sauv=tk.Button(fourmi,text="sauvegarder",command=sauvegarde)
+bouton_charge=tk.Button(fourmi,text="charger",command=charge)
+
+#placement du canevas
+can.grid(column=0, row=0, rowspan=10,columnspan=3)
+
+#placements des boutons
+bouton_play.grid(column=3,row=2)
+bouton_etape.grid(column=3,row=4)
+bouton_tmsplus.grid(column=3,row=6)
+bouton_tmsmoins.grid(column=3,row=8)
+bouton_sauv.grid(column=1,row=11)
+bouton_charge.grid(column=2,row=11)
+
+##################################
+#déroulement principal
 etape()
+
 fourmi.mainloop()
