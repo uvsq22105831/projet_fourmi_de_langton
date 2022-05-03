@@ -39,7 +39,7 @@ def deplacement(position,direction, sol):
     aa, bb = (-b, a) if sol[i][j] == 0 else (b, -a)
     return (i + aa, j + bb), (aa, bb)
 
-def dessinefourmi(position, direction, sol):
+def dessinefourmi(position, sol):
     """va donner la nouvelle direction et position de la fourmi"""
     global fourmimi,dirfourm,positionavant,premiertour
     (ii, jj), nouvelledir = deplacement(position, direction, sol)
@@ -97,7 +97,7 @@ def creesol(c, d):
 
 def etape():
     global position, direction
-    position, direction = dessinefourmi(position, direction, sol)
+    position, direction = dessinefourmi(position, sol)
     fourmi.after(tempsetape, etape)
 
 
@@ -133,33 +133,38 @@ def ralentemps():
 
 def effectetape():
     global position, direction
-    position, direction = dessinefourmi(position, direction, sol)
+    position = dessinefourmi(position, sol)
 
 def sauvegarde():
-    fic =open("sauvegarde.txt","w")
+    fic = open("sauvegarde.txt","w")
     fic.write(str(NOMBRECARRE)+"\n")
-    for k in range(NOMBRECARRE):
-        for l in range(NOMBRECARRE):
-            fic.write(str(sol[k][l])+"\n")
-    fic.close
+    for i in range(NOMBRECARRE):
+        for j in range(NOMBRECARRE):
+            fic.write(str(sol[i][j])+"\n")
+    fic.close()
 
 def charge():
-    global NOMBRECARRE, colorcarre
+    global NOMBRECARRE
     fic = open("sauvegarde.txt", "r")
     ligne = fic.readline()
     NOMBRECARRE = int(ligne)
-    premiertour=0
-    i,j=0,0
+    i = j = 0
     for ligne in fic:
         n = int(ligne)
         sol[i][j] = n
-        etape
+        colorcarre = n
+        if colorcarre!=0: 
+            colorcarre = creesol(i, j)
+            sol[i][j] = colorcarre
+        else :
+            can.delete(colorcarre)
+            sol[i][j] = 0
         j += 1
         if j == NOMBRECARRE:
             j = 0
             i += 1
     fic.close()
-    effectetape()
+    
 ##########################################
 #programme principal
 fourmi = tk.Tk()
