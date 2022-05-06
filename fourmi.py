@@ -37,13 +37,11 @@ def deplacement(position,direction, sol):
         i=NOMBRECARRE-1
     if i==NOMBRECARRE:
         i=1
-    if sol[i][j] == 0:
-        aa, bb = (-b, a)
-    else:
-        aa, bb=(b, -a)
+    aa, bb = (-b, a) if sol[i][j] == 0 else (b, -a)
     return (i + aa, j + bb), (aa, bb)
 
 def deplacement_inverse(position, direction, sol):
+    """créé le déplacement contraire a partir de la liste sol"""
     i, j = position
     a, b = direction
     if j==NOMBRECARRE:
@@ -55,11 +53,8 @@ def deplacement_inverse(position, direction, sol):
     if i==NOMBRECARRE:
         i=1
     
-    if sol[i][j] == 0:
-        aa, bb = (b, -a)
-    else:
-        aa, bb =(-b, a)
-    return (i + aa, j + bb), (aa, bb) 
+    aa, bb = (b, -a) if sol[i][j] == 0 else (-b, a)
+    return (i + aa, j + bb), (aa, bb)
 
 def etape_inverse():
     global position, direction, inverse
@@ -68,7 +63,8 @@ def etape_inverse():
 
 
 def dessinefourmi(position, sol):
-    """va donner la nouvelle direction et position de la fourmi"""
+    """va modeliser la fourmi à partir de la fonction deplacement et creer le principe du tore.
+    Va montrer l'emplacement de la creation du sol"""
     global fourmimi,dirfourm,positionavant,premiertour
     (ii, jj), nouvelledir = deplacement(position, direction, sol)
     print(position)
@@ -94,17 +90,16 @@ def dessinefourmi(position, sol):
 
     can.delete(fourmimi)
     if dirfourm=="bas"and colorfourm==0 or dirfourm =="haut" and colorfourm!=0:
-        fourmimi=can.create_rectangle((x+2, y), (x+Cellule-2, y+Cellule-1.5),fill="red",outline='')
+        fourmimi=can.create_polygon((x+Cellule/2, y+Cellule),(x,y),(x+Cellule, y),fill="red",outline='')
         dirfourm="gauche"
     elif dirfourm=="gauche"and colorfourm==0 or dirfourm =="droite" and colorfourm!=0:
-        fourmimi=can.create_rectangle((x, y+2), (x+Cellule-1.5, y+Cellule-2),fill="red",outline='')
+        fourmimi=can.create_polygon((x, y+Cellule/2),(x+Cellule,y), (x+Cellule, y+Cellule),fill="red",outline='')
         dirfourm="haut"
     elif dirfourm=="haut"and colorfourm==0 or dirfourm =="bas" and colorfourm!=0:
-        fourmimi=can.create_rectangle((x+2, y), (x+Cellule-2, y+Cellule-1.5),fill="red",outline='')
+        fourmimi=can.create_polygon((x+Cellule/2, y),(x, y+Cellule), (x+Cellule, y+Cellule),fill="red",outline='')
         dirfourm="droite"
     elif dirfourm=="droite"and colorfourm==0 or dirfourm =="gauche" and colorfourm!=0:
-        fourmimi=can.create_rectangle((x+1.5, y+2), (x +Cellule, y+Cellule-2),fill="red",outline='')
-        dirfourm= "bas"
+        fourmimi=can.create_polygon((x+Cellule, y+Cellule/2),(x,y), (x, y+Cellule),fill="red",outline='')
 
     if premiertour ==0:
         if colorcarre == 0:
@@ -119,6 +114,8 @@ def dessinefourmi(position, sol):
     return (ii, jj), nouvelledir
 
 def dessinefourmi_inverse(position, sol):
+    """va modeliser la fourmi à partir de la fonction deplacement et creer le principe du tore.
+    Va montrer l'emplacement de la creation du sol(dans le sens contraire)."""
     global fourmimi,dirfourm,positionavant,premiertour
     (ii, jj), nouvelledir = deplacement_inverse(position, direction, sol)
     print(position)
@@ -140,57 +137,57 @@ def dessinefourmi_inverse(position, sol):
     print(colorfourm)
     c, d =positionavant
     f,g = c * Cellule, d * Cellule
-    colorcarre=sol[c][d]
+    colorcarre=sol[m][n]
 
     can.delete(fourmimi)
     if dirfourm=="bas"and colorfourm==0 or dirfourm =="haut" and colorfourm!=0:
-        fourmimi=can.create_rectangle((x+2, y), (x+Cellule-2, y+Cellule-1.5),fill="red",outline='')
+        fourmimi=can.create_polygon((x+Cellule/2, y+Cellule),(x,y),(x+Cellule, y),fill="red",outline='')
         dirfourm="gauche"
     elif dirfourm=="gauche"and colorfourm==0 or dirfourm =="droite" and colorfourm!=0:
-        fourmimi=can.create_rectangle((x, y+2), (x+Cellule-1.5, y+Cellule-2),fill="red",outline='')
+        fourmimi=can.create_polygon((x, y+Cellule/2),(x+Cellule,y), (x+Cellule, y+Cellule),fill="red",outline='')
         dirfourm="haut"
     elif dirfourm=="haut"and colorfourm==0 or dirfourm =="bas" and colorfourm!=0:
-        fourmimi=can.create_rectangle((x+2, y), (x+Cellule-2, y+Cellule-1.5),fill="red",outline='')
+        fourmimi=can.create_polygon((x+Cellule/2, y),(x, y+Cellule), (x+Cellule, y+Cellule),fill="red",outline='')
         dirfourm="droite"
     elif dirfourm=="droite"and colorfourm==0 or dirfourm =="gauche" and colorfourm!=0:
-        fourmimi=can.create_rectangle((x+1.5, y+2), (x +Cellule, y+Cellule-2),fill="red",outline='')
-        dirfourm= "bas"
+        fourmimi=can.create_polygon((x+Cellule, y+Cellule/2),(x,y), (x, y+Cellule),fill="red",outline='')
 
-    if premiertour ==0:
-        if colorcarre == 0:
-            colorcarre = creersol_inverse(c, d)
-            sol[c][d] = colorcarre
-        else:
-            can.delete(colorcarre)
-            sol[c][d] = 0
+    if colorcarre == 0:
+        colorcarre = creersol_inverse(m, n)
+        sol[m][n] = colorcarre
     else:
-        premiertour=0
-    positionavant=position
+        can.delete(colorcarre)
+        sol[m][n] = 0
     return (ii, jj), nouvelledir
 
 
 def creesol(c, d):
+    """creer le sol à partir de la fonction dessinefourmi"""
     f, g = c * Cellule, d * Cellule
-    colorcarre = can.create_rectangle((f, g), (f + Cellule , g + Cellule),fill="black",outline='')
+    colorcarre = can.create_rectangle((f, g), (f + Cellule, g + Cellule),fill="black",outline='')
     return colorcarre
 
-def creersol_inverse(c, d):
-    f, g = c * Cellule, d * Cellule
-    colorcarre = can.create_rectangle((f, g), (f - Cellule , g + Cellule),fill="black",outline='')
+def creersol_inverse(m, n):
+    """creer le sol à partir de la fonction dessinefourmi_inverse"""
+    f, g = m * Cellule, n * Cellule
+    colorcarre = can.create_rectangle((f, g), (g - Cellule, f - Cellule),fill="white",outline='')
     return colorcarre
-
 
 def etape():
+    """permet à la fourmi d'avancer en boucle"""
     global position, direction
     position, direction = dessinefourmi(position, sol)
     fourmi.after(tempsetape, etape)
 
 
 def fonctionboutplay():
+    """permet d'arreter la boucle a partir de la fonction pause,
+    ainsi que changer le nom du bouton"""
     pause()
     changebout()
 
 def pause():
+    """permet d'arreter la boucle"""
     global tempsetape
     if tempsetape == 9999999999:
         tempsetape =510
@@ -199,6 +196,7 @@ def pause():
         tempsetape =9999999999
 
 def changebout():
+    """change le nom du bouton play/pause"""
     if bouton_play['text'] =="pause":
         bouton_play['text']="play"
     else:
@@ -206,20 +204,24 @@ def changebout():
 
 
 def accelletemps():
+    """permet d'effectuer une étape plus rapidement"""
     global tempsetape
     if tempsetape > 11:
         tempsetape-=50
 
 def ralentemps():
+    """permet d'effectuer une étape plus lentement"""
     global tempsetape
     tempsetape+=50
 
 
 def effectetape():
+    """permet de passer une étape manuellement"""
     global position, direction
-    position = dessinefourmi(position, sol)
+    position, direction = dessinefourmi(position, sol)
 
 def sauvegarde():
+    """enregistre les sols noir et blanc de la fourmi dans le fichier sauvegarde.txt"""
     fic = open("sauvegarde.txt","w")
     fic.write(str(NOMBRECARRE)+"\n")
     for i in range(NOMBRECARRE):
@@ -228,6 +230,7 @@ def sauvegarde():
     fic.close()
 
 def charge():
+    """recupere la sauvegarde du fichier sauvegarde.txt"""
     global NOMBRECARRE
     fic = open("sauvegarde.txt", "r")
     ligne = fic.readline()
