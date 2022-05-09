@@ -1,6 +1,10 @@
 # projet_fourmi_de_langton
 MIASHS TD01
 
+
+https://github.com/uvsq22105831/projet_fourmi_de_langton
+
+
 Nom, Prenom, numero etudiant : 
                                Rafil, Akli Yacine, 22105831
 
@@ -8,7 +12,7 @@ Nom, Prenom, numero etudiant :
                                
                                Barrere, Manon
                                
-                               
+                   
                                
                                
 Présentation :
