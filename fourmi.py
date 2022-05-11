@@ -28,6 +28,8 @@ inverse=0
 
 def deplacement(position,direction, sol):
     """créé le déplacement a partir de la liste sol"""
+    """Inspiration de la ligne 42 et 43 via le site 
+    http://pascal.ortiz.free.fr/contents/tkinter/projets_tkinter/langton/langton.html"""
     i, j = position
     a, b = direction
     if j==NOMBRECARRE:
@@ -38,7 +40,7 @@ def deplacement(position,direction, sol):
         i=NOMBRECARRE-1
     if i==NOMBRECARRE:
         i=1
-    aa, bb = (-b, a) if sol[i][j] == 0 else (b, -a)
+    aa, bb = (-b, a) if sol[i][j] == 0 else (b, -a) 
     return (i + aa, j + bb), (aa, bb)
 
 def deplacement_inverse(position, direction, sol):
@@ -67,7 +69,9 @@ def etape_inverse():
 
 def dessinefourmi(position, sol):
     """va modeliser la fourmi à partir de la fonction deplacement et creer le principe du tore.
-    Va montrer l'emplacement de la creation du sol"""
+    Va montrer l'emplacement de la creation du sol
+    inspirationde la création du sol via le site 
+    http://pascal.ortiz.free.fr/contents/tkinter/projets_tkinter/langton/langton.html"""
     global fourmimi,dirfourm,positionavant,premiertour
     (ii, jj), nouvelledir = deplacement(position, direction, sol)
     m, n = position
@@ -163,6 +167,8 @@ def dessinefourmi_inverse(position, sol):
 
 def creesol(c, d):
     """creer le sol à partir de la fonction dessinefourmi"""
+    """inspiration via le site
+    http://pascal.ortiz.free.fr/contents/tkinter/projets_tkinter/langton/langton.html"""
     f, g = c * Cellule, d * Cellule
     colorcarre = can.create_rectangle((f, g), (f + Cellule, g + Cellule),fill="black",outline='')
     return colorcarre
