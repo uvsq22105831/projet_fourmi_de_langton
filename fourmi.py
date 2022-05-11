@@ -1,6 +1,7 @@
 #######################################
 #RAFIL Akli Yacine
 #JOUAN Maxime
+#BARRERE Manon
 #https://github.com/uvsq22105831/projet_fourmi_de_langton
 ########################################
 import tkinter as tk
@@ -42,6 +43,7 @@ def deplacement(position,direction, sol):
 
 def deplacement_inverse(position, direction, sol):
     """créé le déplacement contraire a partir de la liste sol"""
+    """fonction ne fonctionne pas totalement"""
     i, j = position
     a, b = direction
     if j==NOMBRECARRE:
@@ -57,6 +59,7 @@ def deplacement_inverse(position, direction, sol):
     return (i + aa, j + bb), (aa, bb)
 
 def etape_inverse():
+    """fonction ne fonctionne pas totalement"""
     global position, direction, inverse
     inverse = 1
     position, direction = dessinefourmi_inverse(position, sol)
@@ -67,7 +70,6 @@ def dessinefourmi(position, sol):
     Va montrer l'emplacement de la creation du sol"""
     global fourmimi,dirfourm,positionavant,premiertour
     (ii, jj), nouvelledir = deplacement(position, direction, sol)
-    print(position)
     m, n = position
     if n==NOMBRECARRE:
         position=(m,1)
@@ -83,7 +85,6 @@ def dessinefourmi(position, sol):
         m=1
     x, y = m * Cellule, n * Cellule
     colorfourm = sol[m][n]
-    print(colorfourm)
     c, d =positionavant
     f,g = c * Cellule, d * Cellule
     colorcarre=sol[c][d]
@@ -116,9 +117,9 @@ def dessinefourmi(position, sol):
 def dessinefourmi_inverse(position, sol):
     """va modeliser la fourmi à partir de la fonction deplacement et creer le principe du tore.
     Va montrer l'emplacement de la creation du sol(dans le sens contraire)."""
+    """fonction ne fonctionne pas totalement"""
     global fourmimi,dirfourm,positionavant,premiertour
     (ii, jj), nouvelledir = deplacement_inverse(position, direction, sol)
-    print(position)
     m, n = position
     if n==NOMBRECARRE:
         position=(m,1)
@@ -134,7 +135,6 @@ def dessinefourmi_inverse(position, sol):
         m=1
     x, y = m * Cellule, n * Cellule
     colorfourm = sol[m][n]
-    print(colorfourm)
     c, d =positionavant
     f,g = c * Cellule, d * Cellule
     colorcarre=sol[m][n]
@@ -169,6 +169,7 @@ def creesol(c, d):
 
 def creersol_inverse(m, n):
     """creer le sol à partir de la fonction dessinefourmi_inverse"""
+    """fonction ne fonctionne pas totalement"""
     f, g = m * Cellule, n * Cellule
     colorcarre = can.create_rectangle((f, g), (g - Cellule, f - Cellule),fill="white",outline='')
     return colorcarre
@@ -268,6 +269,7 @@ bouton_tmsmoins=tk.Button(fourmi,text="ralentir le temps",command=ralentemps)
 bouton_sauv=tk.Button(fourmi,text="sauvegarder",command=sauvegarde)
 bouton_charge=tk.Button(fourmi,text="charger",command=charge)
 bouton_revenir=tk.Button(fourmi,text="revenir en arriere", command=etape_inverse)
+"""fonction ne fonctionne pas totalement"""
 
 #placement du canevas
 can.grid(column=0, row=0, rowspan=10,columnspan=3)
